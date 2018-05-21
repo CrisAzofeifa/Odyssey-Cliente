@@ -92,11 +92,29 @@ public class MainWindowController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
         fileChooser.showOpenDialog(window);
-        ReproductorMp3 repro = ReproductorMp3.getSingletonInstance(selectedFile.getPath());
-        repro.start();
         fileChooser.setTitle("Open Resource File");
         System.out.println(selectedFile.getPath());
         
+    }
+            
+    @FXML
+    void Pause(ActionEvent event) {
+
+    }
+
+    @FXML
+    void Play(ActionEvent event) {
+
+    }
+
+    @FXML
+    void Resume(ActionEvent event) {
+
+    }
+
+    @FXML
+    void Stop(ActionEvent event) {
+
     }
     
 }

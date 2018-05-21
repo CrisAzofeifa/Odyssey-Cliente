@@ -31,6 +31,7 @@ public class DocumentoXML {
 	private Document doc;
 
     public Document getDoc() {
+        System.out.println("Soy este man: " + doc.getFirstChild().getTextContent());
         return doc;
     }
         private Element rootElement;

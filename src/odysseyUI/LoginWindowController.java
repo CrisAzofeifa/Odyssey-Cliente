@@ -72,6 +72,7 @@ public class LoginWindowController implements Initializable {
         nuevo.crearHijos("Nombre", userTextField.getText());
         nuevo.crearHijos("Contraseña", passwordTextField.getText());
         nuevo.ejecutar();
+        nuevo.getDoc();
         
         Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         Scene creacionDocs = new Scene(gui);
