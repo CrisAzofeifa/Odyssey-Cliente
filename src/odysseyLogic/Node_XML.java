@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-
 public class Node_XML {
 	private Document document;
 	//Constructor de la clase
@@ -36,6 +35,7 @@ public class Node_XML {
 			Element eElement = (Element) nNode;
 			return eElement.getElementsByTagName(value).item(0).getTextContent();
 		} else {
+			
 			return null;
 		}
 	}
