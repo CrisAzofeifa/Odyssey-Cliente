@@ -27,8 +27,7 @@ public class Node_XML {
 	public void set_parent (Node node, Node parent) {
 		
 	}
-	// Obtiene el valor especifico de un nodo (key) en especifico (index) obtiene el valor de algún 
-	// tag dentro de este key (value)
+
 	public String get_value_index (String key, int index, String value) {
 		Node nNode = document.getElementsByTagName(key).item(index);
 		if (nNode.getNodeType() == Node.ELEMENT_NODE) {

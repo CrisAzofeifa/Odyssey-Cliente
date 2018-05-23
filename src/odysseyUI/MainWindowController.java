@@ -80,7 +80,7 @@ public class MainWindowController implements Initializable {
     }
     
     @FXML
-    void SincronizarDatos(ActionEvent event) {
+        void SincronizarDatos(ActionEvent event) {
 
     }        
     

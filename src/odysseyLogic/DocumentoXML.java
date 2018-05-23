@@ -57,7 +57,7 @@ public class DocumentoXML {
 		// StreamResult result = new StreamResult(System.out);
                 
                 //filename is filepath string
-                BufferedReader br = new BufferedReader(new FileReader(new File("archivo.xml")));
+                BufferedReader br = new BufferedReader(new FileReader(new File("C::archivo.xml")));
                 String line;
                 StringBuilder sb = new StringBuilder();
 

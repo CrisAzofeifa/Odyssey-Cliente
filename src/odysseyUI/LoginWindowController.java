@@ -68,11 +68,11 @@ public class LoginWindowController implements Initializable {
     
     @FXML
     void validarDatos(ActionEvent event) throws IOException, TransformerException, FileNotFoundException, JavaLayerException, ParserConfigurationException {       
-        DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
+        /*DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
         nuevo.crearHijos("Nombre", userTextField.getText());
         nuevo.crearHijos("Contraseña", passwordTextField.getText());
         nuevo.ejecutar();
-        nuevo.getDoc();
+        nuevo.getDoc();*/
         
         Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         Scene creacionDocs = new Scene(gui);
