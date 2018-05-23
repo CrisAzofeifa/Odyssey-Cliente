@@ -55,16 +55,10 @@ public class MainWindowController implements Initializable {
     private Slider sliderCancion;
        
     @FXML
-    private TableView<Cancion> listaCanciones; 
+    private ListView<String> listaCanciones;
 
-    @FXML
-    private TableColumn<Cancion, String> ColumnaCancion;
 
-    @FXML
-    private TableColumn<Cancion, String> ColumnaArtista;
-
-    @FXML
-    private TableColumn<Cancion, String> ColumnaAlbum;    
+    private ReproductorMp3 repro = new ReproductorMp3();
 
     /**
      * Initializes the controller class.
@@ -76,10 +70,19 @@ public class MainWindowController implements Initializable {
 
     @FXML
     void prueba(ActionEvent event) {       
-        System.out.println("Este es el progreso: " + sliderCancion.getValue());
+        listaCanciones.getItems().add("Believer  -  Imagine Dragons   -   Deconocido");
                 
-        
-    }    
+    } 
+    
+    @FXML
+    void EliminarCancion(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void SincronizarDatos(ActionEvent event) {
+
+    }        
     
     @FXML
     void registrarse(ActionEvent event) {
@@ -91,7 +94,7 @@ public class MainWindowController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
-        fileChooser.showOpenDialog(window);
+        //fileChooser.showOpenDialog(window);
         fileChooser.setTitle("Open Resource File");
         System.out.println(selectedFile.getPath());
         
@@ -99,22 +102,22 @@ public class MainWindowController implements Initializable {
             
     @FXML
     void Pause(ActionEvent event) {
-
+        repro.Pause();
     }
 
     @FXML
     void Play(ActionEvent event) {
-
+        repro.Play();
     }
 
     @FXML
     void Resume(ActionEvent event) {
-
+        repro.Resume();
     }
 
     @FXML
     void Stop(ActionEvent event) {
-
+        repro.Stop();
     }
     
 }

@@ -11,10 +11,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ReproductorMp3{
     
     private static ReproductorMp3 instancia;
+    private FileInputStream inputStream;
+    private BufferedInputStream bufferedInputStream;
+    private Player player;
+    private long pausedAt, endsAt;
+    private String songPath;
+    private Thread repro;
     public static ReproductorMp3 getSingletonInstance() {
         if (instancia == null){
             instancia = new ReproductorMp3();
@@ -24,6 +40,110 @@ public class ReproductorMp3{
             
         }
         return instancia;
+        
+    }
+    
+    
+    public void Stop(){
+        System.out.println("Stopped song...");
+        stop_music();
+        endsAt = pausedAt = 0;
+    }
+
+    public void Play(){
+        play_music("/home/cris/NetBeansProjects/Prueba/3CCv6Zw7Zmpy.128.mp3");
+        System.out.println("Playing song...");
+    }
+
+    public  void Pause(){
+        System.out.println("Paused song...");
+        pause_music();
+    }
+
+    public void Resume(){
+        resume_music();
+    }
+
+    public void slider_drag(){
+
+    }
+
+    private void stop_music(){
+        if(player != null){
+            player.close();
+        }
+    }
+
+    private void play_music(String path){
+        if(player == null){
+            try {
+                inputStream = new FileInputStream(path);
+                bufferedInputStream = new BufferedInputStream(inputStream);
+
+                player = new Player(bufferedInputStream);
+                endsAt = inputStream.available();
+                songPath = path + "";
+
+            } catch (FileNotFoundException e) {
+                System.out.println("Cannot reproduce file");
+            } catch (JavaLayerException e) {
+                System.out.println("Cannot start player");
+            } catch (IOException e) {
+
+            }
+
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        player.play();
+                    } catch (JavaLayerException e) {
+                        System.out.println("Cannot play :(");
+                    }
+                }
+            }.start();
+        }
+    }
+
+    private void pause_music(){
+        if(player != null){
+            try {
+                pausedAt = inputStream.available();
+            } catch (IOException e) {
+
+            }
+            player.close();
+        }
+    }
+
+    private void resume_music(){
+        try {
+            inputStream = new FileInputStream(songPath);
+            bufferedInputStream = new BufferedInputStream(inputStream);
+
+            player = new Player(bufferedInputStream);
+            inputStream.skip(endsAt - pausedAt);
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot reproduce file");
+        } catch (JavaLayerException e) {
+            System.out.println("Cannot start player");
+        } catch (IOException e) {
+
+        }
+
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    player.play();
+                } catch (JavaLayerException e) {
+                    System.out.println("Cannot play :(");
+                }
+            }
+        }.start();
+    }
+
+    private void setSliderPosition(){
         
     }
 }
