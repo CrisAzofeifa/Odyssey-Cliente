@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -40,7 +41,8 @@ public class Odyssey extends Application {
                 String p = NUEVO.DepurarXML(client.getMensajeActual());
                 
                 System.out.print("Soy el depurado: "+ p);
-                Node_XML doc = new Node_XML(NUEVO.parsearString(p));       
+                Node_XML doc = new Node_XML(NUEVO.parsearString(p));  
+                //Base64.Decoder
         
         
         Parent root = FXMLLoader.load(getClass().getResource("LoginWindow.fxml"));
