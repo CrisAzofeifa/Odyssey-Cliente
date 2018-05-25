@@ -9,7 +9,7 @@ public class clientetcp {
 	}
 	
 	java.net.Socket crear() throws UnknownHostException, IOException {
-	   String ip = "localhost";
+	   String ip = "10.42.0.42";
 	   int port = 8888;
 	   java.net.Socket socket = null;
 	
@@ -19,8 +19,6 @@ public class clientetcp {
 	   
 
 }
-	
-	
 	  void cerrar(java.net.Socket socket) throws IOException {
 	    	try {
 				socket.close();

@@ -32,7 +32,7 @@ public class XMLParser {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new ByteArrayInputStream(xml.getBytes("UTF-8"))); 
             
-        // escribimos el contenido en un archivo .xml
+        /*// escribimos el contenido en un archivo .xml
 	TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	Transformer transformer = transformerFactory.newTransformer();
 	DOMSource source = new DOMSource(doc);
@@ -42,12 +42,24 @@ public class XMLParser {
         // Si se quiere mostrar por la consola...
 	// StreamResult result = new StreamResult(System.out);
  
-	transformer.transform(source, result);
+	transformer.transform(source, result);*/
  
 	System.out.println("File saved!");
         return doc;
         
     }
     
+    public String DepurarXML(String XML){
+        int x = 0;
+        String Output = "";
+        System.out.println("Soy este weon: " + XML.toCharArray());
+        while(XML.charAt(x) != '}'){
+            Output = Output + XML.charAt(x);
+            x++;
+        }
+        
+        
+        return Output;
+    }
     
 }
