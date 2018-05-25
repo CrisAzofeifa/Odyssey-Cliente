@@ -13,15 +13,17 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
  
 
-public class clientetcp extends Thread{
+public class clientetcp extends Thread {
 
    public void server() throws ParserConfigurationException, UnsupportedEncodingException, SAXException, TransformerException
    {
-       String ip = "10.42.0.42";
+       String ip = "localhost";
 	   int port = 8888;
 	   java.net.Socket socket;
 	try {
@@ -46,7 +48,12 @@ public class clientetcp extends Thread{
 		   out.write(msg);
 		   socket.shutdownOutput();
                    XMLParser parser = new XMLParser();
-                   parser.parsearString(reply);
+                   Document x = parser.parsearString(reply);
+                   Node_XML PAR = new Node_XML(x);
+                   NodeList p = PAR.by_tagName("mBytes");
+                   System.out.println("Soy este perro : " + p.item(0));
+                   
+                   //FileUtils.writeByteArrayToFile(new File("pathname"), myByteArray);
                   
 		   try {
 			socket.close();

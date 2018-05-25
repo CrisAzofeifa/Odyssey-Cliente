@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLParser {
     
-    public void parsearString(String xml) throws ParserConfigurationException, UnsupportedEncodingException, SAXException, IOException, TransformerConfigurationException, TransformerException{
+    public Document parsearString(String xml) throws ParserConfigurationException, UnsupportedEncodingException, SAXException, IOException, TransformerConfigurationException, TransformerException{
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new ByteArrayInputStream(xml.getBytes("UTF-8"))); 
@@ -45,6 +45,7 @@ public class XMLParser {
 	transformer.transform(source, result);
  
 	System.out.println("File saved!");
+        return doc;
         
     }
     

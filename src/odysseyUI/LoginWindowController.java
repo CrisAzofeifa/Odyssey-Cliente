@@ -30,8 +30,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javazoom.jl.decoder.JavaLayerException;
 import odysseyLogic.DocumentoXML;
+import odysseyLogic.Node_XML;
 import odysseyLogic.ReproductorMp3;
 import odysseyLogic.clientetcp;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -68,18 +70,22 @@ public class LoginWindowController implements Initializable {
     
     @FXML
     void validarDatos(ActionEvent event) throws IOException, TransformerException, FileNotFoundException, JavaLayerException, ParserConfigurationException {       
-        /*DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
+        DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
         nuevo.crearHijos("Nombre", userTextField.getText());
         nuevo.crearHijos("Contraseña", passwordTextField.getText());
-        nuevo.ejecutar();
-        nuevo.getDoc();*/
         
-        Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        Node_XML nue = new Node_XML(nuevo.getDoc());
+        NodeList p = nue.by_tagName("Contraseña");
+        System.out.println("Soy este elemento: " + p.item(0).getNodeName());
+        System.out.println("Soy este atributo: " + p.item(0).getTextContent());
+        
+        
+        /*Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         Scene creacionDocs = new Scene(gui);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(creacionDocs);
-        window.show();
+        window.show();}*/
         
     }
     
