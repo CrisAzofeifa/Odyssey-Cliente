@@ -80,12 +80,12 @@ public class LoginWindowController implements Initializable {
         System.out.println("Soy este atributo: " + p.item(0).getTextContent());
         
         
-        /*Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         Scene creacionDocs = new Scene(gui);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(creacionDocs);
-        window.show();}*/
+        window.show();
         
     }
     

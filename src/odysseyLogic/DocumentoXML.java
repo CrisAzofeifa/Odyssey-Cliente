@@ -46,7 +46,7 @@ public class DocumentoXML {
             
         }
         
-        public String ejecutar() throws TransformerConfigurationException, TransformerException, IOException{
+        public String ConvertirXML_String() throws TransformerConfigurationException, TransformerException, IOException{
             	TransformerFactory tf = TransformerFactory.newInstance();
                 Transformer transformer = tf.newTransformer();
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

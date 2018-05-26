@@ -52,7 +52,6 @@ public class XMLParser {
     public String DepurarXML(String XML){
         int x = 0;
         String Output = "";
-        System.out.println("Soy este weon: " + XML.toCharArray());
         while(XML.charAt(x) != '}'){
             Output = Output + XML.charAt(x);
             x++;
