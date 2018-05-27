@@ -12,7 +12,7 @@ public class clientetcp {
 	}
 	
 	public java.net.Socket crear() throws UnknownHostException, IOException {
-	   String ip = "10.42.0.1";
+	   String ip = "172.18.145.198";
 	   int port = 8888;
 	   java.net.Socket socket = null;
 	
@@ -83,7 +83,7 @@ public class clientetcp {
         	InputStreamReader in = new InputStreamReader(socket.getInputStream());
         	BufferedReader br = new BufferedReader(in);
     		   char[] buffer = new char[573];
-    		   int count = br.read(buffer, 0, 573);
+                   int count = br.read(buffer, 0, 573);
     		   String reply = new String(buffer, 0, count);
     		   System.out.println(reply);
     		   socket.shutdownOutput();
