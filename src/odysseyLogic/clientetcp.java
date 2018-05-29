@@ -12,7 +12,7 @@ public class clientetcp {
 	}
 	
 	public java.net.Socket crear() throws UnknownHostException, IOException {
-	   String ip = "10.42.0.42";
+	   String ip = "127.0.0.1";
 	   int port = 8888;
 	   java.net.Socket socket = null;
 	
