@@ -23,6 +23,7 @@ import odysseyLogic.XML_Parser;
 import odysseyLogic.ReproductorMp3;
 import odysseyLogic.clientetcp;
 import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 
@@ -30,7 +31,7 @@ public class Odyssey extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        /*DocumentoXML n = new DocumentoXML("Comunicacion");
+        DocumentoXML n = new DocumentoXML("Comunicacion");
         n.crearHijos("Codigo", "00");
         String msj = n.ConvertirXML_String();
         
@@ -40,20 +41,19 @@ public class Odyssey extends Application {
                 client.enviar(socket, msj);
                 
 		//client.recibir(socket);
-                System.out.println(client.getMensajeActual());
-                XMLParser NUEVO = new XMLParser();
+                //System.out.println(client.getMensajeActual());
+                XML_Parser NUEVO = new XML_Parser();
                 NUEVO.parsearString(client.getMensajeActual());
                 Base64_ nu = new Base64_();
                 //String p = NUEVO.DepurarXML(client.getMensajeActual());
-                Node_XML doc = new Node_XML(NUEVO.parsearString(client.getMensajeActual()));  
+                NUEVO.parsearString(client.getMensajeActual());
                 
-                NodeList lista = doc.by_tagName("mBytes");
+                NodeList lista = NUEVO.by_tagName("mBytes");
                 byte[] m = Base64.decodeBase64(lista.item(0).getTextContent());
          
-                FileUtils.writeByteArrayToFile(new File("prueba.mp3"), m);
-                MP3 repro = new MP3("/home/cris/NetBeansProjects/Odyssey/prueba.mp3");
-                repro.play();
-                       */
+                FileUtils.writeByteArrayToFile(new File("prueba666.mp3"), m);
+
+                       
                 
         
         

@@ -6,6 +6,8 @@
 package odysseyUI;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -27,9 +29,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import odysseyLogic.Cancion;
+import odysseyLogic.DocumentoXML;
 import odysseyLogic.MP3;
 import odysseyLogic.ReproductorMp3;
+import odysseyLogic.XML_Parser;
+import odysseyLogic.clientetcp;
+import org.xml.sax.SAXException;
 
 /**
  * FXML Controller class
@@ -93,18 +101,41 @@ public class MainWindowController implements Initializable {
         fileChooser.setTitle("Open Resource File");
         System.out.println(selectedFile.getPath());
         this.ruta = selectedFile.getPath();
-        Play(event);
+        //Play(event);
         
     }
+        
+    void streaming() throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException{   
+        DocumentoXML stream = new DocumentoXML("comunicacion");
+        stream.crearHijos("codigo", "0");
+        stream.crearHijos("chunk", "0");
+        clientetcp client = new clientetcp();
+        java.net.Socket socket = client.crear();
+        client.enviar(socket, stream.ConvertirXML_String());
+        System.out.println("Soy este: " + client.getMensajeActual());
+        
+        XML_Parser parser = new XML_Parser();        
+        parser.parsearString(client.getMensajeActual());
+        
+        //String limite = parser.by_tagName("limite").item(0).getTextContent();
+        //int x = Integer.parseInt(limite);
+        
+        /*
+        for(int y = 0; y <= x; y++){
             
+        }*/
+        
+    }
+
     @FXML
     void Pause(ActionEvent event) {
         repro.Pause();
     }
 
     @FXML
-    void Play(ActionEvent event) {
-        repro.Play(ruta);
+    void Play(ActionEvent event) throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException {
+        streaming();
+        //repro.Play(ruta);
     }
 
     @FXML

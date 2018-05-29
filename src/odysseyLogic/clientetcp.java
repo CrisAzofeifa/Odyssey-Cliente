@@ -41,7 +41,7 @@ public class clientetcp {
 		   pw.print(msg);
 		   pw.flush();
 		   out.write(msg);
-		   //recibir2(socket);
+		   recibir2(socket);
 		   
 		  
     	
@@ -59,8 +59,8 @@ public class clientetcp {
      public void recibir(java.net.Socket socket) throws IOException   {
     	InputStreamReader in = new InputStreamReader(socket.getInputStream());
     	BufferedReader br = new BufferedReader(in);
-		   char[] buffer = new char[999999];
-		   int count = br.read(buffer, 0, 999999);
+		   char[] buffer = new char[99999999];
+		   int count = br.read(buffer, 0, 99999999);
 		   String reply = new String(buffer, 0, count);
 		   System.out.println(reply);
                    this.mensajeActual = reply;
@@ -85,8 +85,8 @@ public class clientetcp {
     		   char[] buffer = new char[99999999];
                    int count = br.read(buffer, 0, 99999999);
     		   String reply = new String(buffer, 0, count);
-    		   System.out.println(reply);
     		   socket.shutdownOutput();
+                   System.out.println(reply);
                    this.mensajeActual = reply;
     		      	 		   
         	
@@ -95,11 +95,6 @@ public class clientetcp {
     public String getMensajeActual() {
         return mensajeActual;
     }
-    public InputStream getInputStream(java.net.Socket socket) throws IOException{
-        return socket.getInputStream();
-    }
      
-     
-    	
-    }
+}
 
