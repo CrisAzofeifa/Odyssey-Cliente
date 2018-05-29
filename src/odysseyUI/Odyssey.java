@@ -31,7 +31,7 @@ public class Odyssey extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        /*DocumentoXML n = new DocumentoXML("Comunicacion");
+       /* DocumentoXML n = new DocumentoXML("Comunicacion");
         n.crearHijos("Codigo", "00");
         String msj = n.ConvertirXML_String();
         
@@ -41,9 +41,9 @@ public class Odyssey extends Application {
                 client.enviar(socket, msj);
                 
 		//client.recibir(socket);
-                //System.out.println(client.getMensajeActual());
+                System.out.println(client.getMensajeActual());
                 XML_Parser NUEVO = new XML_Parser();
-                NUEVO.parsearString(client.getMensajeActual());
+                
                 Base64_ nu = new Base64_();
                 //String p = NUEVO.DepurarXML(client.getMensajeActual());
                 NUEVO.parsearString(client.getMensajeActual());
@@ -51,7 +51,9 @@ public class Odyssey extends Application {
                 NodeList lista = NUEVO.by_tagName("mBytes");
                 byte[] m = Base64.decodeBase64(lista.item(0).getTextContent());
          
-                FileUtils.writeByteArrayToFile(new File("prueba666.mp3"), m);
+                FileUtils.writeByteArrayToFile(new File("pruebadeamor666.mp3"), m);
+                MP3 N = new MP3();
+                N.play("/home/cris/NetBeansProjects/Odissey_client-Java--master/pruebadeamor666.mp3");
 */
                        
                 

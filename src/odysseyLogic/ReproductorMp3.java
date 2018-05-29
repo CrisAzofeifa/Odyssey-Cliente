@@ -66,7 +66,9 @@ public class ReproductorMp3{
     }
 
     public void Resume(){
+        if (player != null){
         resume_music();
+        }
     }
 
     public void slider_drag(){
@@ -190,6 +192,35 @@ public class ReproductorMp3{
 
     private void setSliderPosition(){
         
+    }
+
+
+    public FileInputStream getInputStream() {
+        return inputStream;
+    }
+
+    public BufferedInputStream getBufferedInputStream() {
+        return bufferedInputStream;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public long getPausedAt() {
+        return pausedAt;
+    }
+
+    public long getEndsAt() {
+        return endsAt;
+    }
+
+    public String getSongPath() {
+        return songPath;
+    }
+
+    public Thread getCurrent_song() {
+        return current_song;
     }
     
 }

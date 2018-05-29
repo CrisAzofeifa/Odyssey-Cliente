@@ -68,5 +68,19 @@ public class XML_Parser {
 
             this.document = doc;
     }
+        public String DepurarXML(String xml){
+            String fin = "";
+            int x = 0;
+            while(x <= xml.length()){
+                if(xml.charAt(x) != '}'){
+                    fin = fin + xml.charAt(x);
+                    x++;
+                }else{
+                   return fin;
+                }
+            }
+            return null;
+           
+        }
 	
 }
