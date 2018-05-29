@@ -106,24 +106,7 @@ public class MainWindowController implements Initializable {
     }
         
     void streaming() throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException{   
-        DocumentoXML stream = new DocumentoXML("comunicacion");
-        stream.crearHijos("codigo", "0");
-        stream.crearHijos("chunk", "0");
-        clientetcp client = new clientetcp();
-        java.net.Socket socket = client.crear();
-        client.enviar(socket, stream.ConvertirXML_String());
-        System.out.println("Soy este: " + client.getMensajeActual());
-        
-        XML_Parser parser = new XML_Parser();        
-        parser.parsearString(client.getMensajeActual());
-        
-        //String limite = parser.by_tagName("limite").item(0).getTextContent();
-        //int x = Integer.parseInt(limite);
-        
-        /*
-        for(int y = 0; y <= x; y++){
-            
-        }*/
+
         
     }
 
@@ -134,8 +117,23 @@ public class MainWindowController implements Initializable {
 
     @FXML
     void Play(ActionEvent event) throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException {
-        streaming();
-        //repro.Play(ruta);
+        DocumentoXML stream = new DocumentoXML("comunicacion");
+        stream.crearHijos("codigo", "0");
+        stream.crearHijos("chunk", "0");
+        clientetcp client = new clientetcp();
+        java.net.Socket socket = client.crear();
+        client.enviar(socket, stream.ConvertirXML_String());
+        socket.close();
+        XML_Parser parser = new XML_Parser(); 
+        parser.parsearString(client.getMensajeActual());
+        
+        //String limite = parser.by_tagName("limite").item(0).getTextContent();
+        //int x = Integer.parseInt(limite);
+        
+        /*
+        for(int y = 0; y <= x; y++){
+            
+        }*/
     }
 
     @FXML

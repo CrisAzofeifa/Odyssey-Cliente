@@ -2,10 +2,13 @@ package odysseyLogic;
 
 import java.net.*; 
 import java.io.*; 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
  
 
 public class clientetcp {
-        private String mensajeActual;
+        private char[] mensajeActual;
     
 	public clientetcp(){
 		
@@ -34,8 +37,8 @@ public class clientetcp {
 	    }
 	  
 	  
-    public void enviar(java.net.Socket socket, String msg ) throws IOException {
-
+    public void enviar(java.net.Socket socket, String msg ) throws IOException, ParserConfigurationException, UnsupportedEncodingException, SAXException, TransformerException {
+            
     	OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
     	PrintWriter pw = new PrintWriter(out, true);
 		   pw.print(msg);
@@ -57,15 +60,14 @@ public class clientetcp {
 		   //recibir(socket);
 		
     }
-     public void recibir(java.net.Socket socket) throws IOException   {
+     public void recibir(java.net.Socket socket) throws IOException {
     	InputStreamReader in = new InputStreamReader(socket.getInputStream());
     	BufferedReader br = new BufferedReader(in);
 		   char[] buffer = new char[99999999];
 		   int count = br.read(buffer, 0, 99999999);
 		   String reply = new String(buffer, 0, count);
 		   System.out.println(reply);
-                   this.mensajeActual = reply;
-		   socket.shutdownOutput();
+
 		   
 		   
 		 
@@ -80,14 +82,13 @@ public class clientetcp {
   
     
     
-     public void recibir2(java.net.Socket socket) throws IOException   {
+     public void recibir2(java.net.Socket socket) throws IOException, ParserConfigurationException, UnsupportedEncodingException, SAXException, TransformerException   {
         	InputStreamReader in = new InputStreamReader(socket.getInputStream());
         	BufferedReader br = new BufferedReader(in);
-    		   char[] buffer = new char[99999999];
-                   int count = br.read(buffer, 0, 99999999);
+    		   char[] buffer = new char[231244+5];
+                   int count = br.read(buffer, 0, 231244+5);
     		   String reply = new String(buffer, 0, count);
     		   socket.shutdownOutput();
-                   System.out.println(reply);
                    this.mensajeActual = reply;
                    br.close();
     		      	 		   
