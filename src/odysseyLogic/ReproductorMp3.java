@@ -30,8 +30,8 @@ public class ReproductorMp3{
     private Player player;
     private long pausedAt, endsAt;
     private String songPath;
-
-    
+    private Thread current_song;
+   
     private ReproductorMp3(){
         
     }
@@ -80,6 +80,7 @@ public class ReproductorMp3{
     }
 
     private void play_music(String path){
+        
         if(player == null){
             try {
                 inputStream = new FileInputStream(path);
@@ -96,7 +97,7 @@ public class ReproductorMp3{
             } catch (IOException e) {
 
             }
-            new Thread(){
+            current_song = new Thread(){
                 @Override
                 public void run() {
                     try {
@@ -105,10 +106,14 @@ public class ReproductorMp3{
                         System.out.println("Cannot play :(");
                     }
                 }
-            }.start();
+            };
+            current_song.setDaemon(true);
+            current_song.start();
             
         }else{
+  
             try {
+                
                 this.player =null;
                 this.inputStream = new FileInputStream(path);
                 this.bufferedInputStream = new BufferedInputStream(inputStream);
@@ -124,8 +129,8 @@ public class ReproductorMp3{
             } catch (IOException e) {
 
             }
-            
-            new Thread(){
+            current_song.stop();
+            current_song = new Thread(){
                 @Override
                 public void run() {
                     try {
@@ -134,7 +139,9 @@ public class ReproductorMp3{
                         System.out.println("Cannot play :(");
                     }
                 }
-            }.start();
+            };
+            current_song.setDaemon(true);
+            current_song.start();
             
         }
     }
@@ -164,7 +171,9 @@ public class ReproductorMp3{
         } catch (IOException e) {
 
         }
-        new Thread(){
+        current_song.stop();
+        
+        current_song = new Thread(){
             @Override
             public void run() {
                 try {
@@ -173,7 +182,10 @@ public class ReproductorMp3{
                     System.out.println("Cannot play :(");
                 }
             }
-        }.start();
+        };
+        current_song.setDaemon(true);
+        current_song.start();
+        
     }
 
     private void setSliderPosition(){
