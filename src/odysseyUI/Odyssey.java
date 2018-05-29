@@ -31,7 +31,7 @@ public class Odyssey extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        DocumentoXML n = new DocumentoXML("Comunicacion");
+        /*DocumentoXML n = new DocumentoXML("Comunicacion");
         n.crearHijos("Codigo", "00");
         String msj = n.ConvertirXML_String();
         
@@ -52,7 +52,7 @@ public class Odyssey extends Application {
                 byte[] m = Base64.decodeBase64(lista.item(0).getTextContent());
          
                 FileUtils.writeByteArrayToFile(new File("prueba666.mp3"), m);
-
+*/
                        
                 
         
