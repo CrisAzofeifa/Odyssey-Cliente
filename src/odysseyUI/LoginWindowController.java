@@ -61,7 +61,6 @@ public class LoginWindowController implements Initializable {
     
     @FXML
     void cambiarPaginaRegistro(ActionEvent event) throws IOException {        
-        System.out.println("odyssey.LoginWindowController.cambiarPaginaRegistro()");
         Parent gui = FXMLLoader.load(getClass().getResource("RegistrationWindow.fxml"));
         Scene creacionDocs = new Scene(gui);
 
@@ -75,7 +74,7 @@ public class LoginWindowController implements Initializable {
     void validarDatos(ActionEvent event) throws ParserConfigurationException, TransformerException, TransformerConfigurationException, IOException, UnsupportedEncodingException, SAXException {       
         DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
         nuevo.crearHijos("nombre", userTextField.getText());
-        nuevo.crearHijos("contraseña", passwordTextField.getText());
+        nuevo.crearHijos("contrasena", passwordTextField.getText());
         nuevo.crearHijos("codigo", "1");
         loginUsuario(nuevo.ConvertirXML_String());
         if(true){//loginUsuario(nuevo.ConvertirXML_String())){

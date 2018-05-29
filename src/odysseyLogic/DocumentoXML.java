@@ -58,9 +58,6 @@ public class DocumentoXML {
                 return output;
         }
         
-        public void crearElemento(String nombre){
-	                
-        }
         
         public void crearHijos(String NombreElemento, String Atributo){
                 Element nuevo = doc.createElement(NombreElemento);

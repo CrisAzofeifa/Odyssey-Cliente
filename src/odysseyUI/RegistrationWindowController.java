@@ -24,7 +24,10 @@ import java.io.IOException;
 import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import odysseyLogic.DocumentoXML;
+import odysseyLogic.XML_Parser;
+import odysseyLogic.clientetcp;
 
 /**
  * FXML Controller class
@@ -62,6 +65,10 @@ public class RegistrationWindowController implements Initializable {
 
     @FXML
     private PasswordField PasswordTextField2;
+    
+    @FXML
+    private TextField NombreTextField;
+    
 
     @FXML
     private Button VolverBTN;
@@ -80,19 +87,69 @@ public class RegistrationWindowController implements Initializable {
         window.show();
     }
     @FXML
-    void registrar(ActionEvent event) throws ParserConfigurationException {
-        DocumentoXML nuevo = new DocumentoXML("Registrar");
-        nuevo.crearHijos("NombreUsuario", UsuarioTextField.getText());
-        nuevo.crearHijos("Contraseña", PasswordTextField.getText());
+    void registrar(ActionEvent event) throws ParserConfigurationException, IOException, TransformerException {
+        if(UsuarioTextField.getText().length() != 0 & NombreTextField.getText().length() != 0){
+            if(PasswordTextField.getText().length() >= 8){
+                if(PasswordTextField.getText().equals(PasswordTextField2.getText())){
+                    DocumentoXML registro = new DocumentoXML("comunicacion");
+                    registro.crearHijos("codigo", "1");
+                    registro.crearHijos("usuario", UsuarioTextField.getText());
+                    registro.crearHijos("nombre", NombreTextField.getText());
+                    registro.crearHijos("contrasena", PasswordTextField.getText());
+                    registro = verificarGéneros(registro);
+                    System.out.println(registro.ConvertirXML_String());
+                    /*clientetcp client = new clientetcp();
+                    java.net.Socket socket = client.crear();
+                    client.enviar(socket, registro.ConvertirXML_String());*/
+                        
+                }else{
+                    //Colocar ventana emergente
+                    System.out.println(1);
+                }
+            }else{
+                System.out.println(2);
+                //Colocar ventana emergente
+            }
+        }else{
+            System.out.println(3);
+            //Colocar ventana emergente
+        }
+        
+    }        
+ 
+    
+    public DocumentoXML verificarGéneros(DocumentoXML xml){
+        if(Rock.isSelected()){
+            xml.crearHijos("rock", "1");
+        }else{
+            xml.crearHijos("rock", "0");            
+        }
+        if(Electro.isSelected()){
+            xml.crearHijos("electronica", "1");            
+        }else{
+            xml.crearHijos("electronica", "0");            
+        }
+        if(HipHop.isSelected()){
+            xml.crearHijos("hiphop", "1");            
+        }else{
+            xml.crearHijos("hiphop", "0");            
+        }
+        if(Metal.isSelected()){
+            xml.crearHijos("metal", "1");            
+        }else{
+            xml.crearHijos("metal", "0");            
+        }
+        if(Reggaeton.isSelected()){
+           xml.crearHijos("reggaeton", "1");            
+        }else{
+            xml.crearHijos("reggaeton", "0");            
+        }
+        if(Rap.isSelected()){
+            xml.crearHijos("rap", "1");            
+        }else{
+            xml.crearHijos("rap", "0");
+        }
+        return xml;
     }
-    public String validarGeneros(){
-        String generos = null;  
-
-            
-        
-        
-        
-        return generos;
-    }  
     
 }
