@@ -6,24 +6,22 @@
 package odysseyLogic;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 /**
  *
  * @author cris
  */
 public class Base64_ {
     
-    public String cifrarBase64(String a){
-        Base64.Encoder encoder = Base64.getEncoder();
-        String b = encoder.encodeToString(a.getBytes(StandardCharsets.UTF_8) );        
-        return b;
-    }
- 
-    public String descifrarBase64(String a){
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] decodedByteArray = decoder.decode(a);
- 
-        String b = new String(decodedByteArray);        
-        return b;
-    }
+        public String decode(String s) {
+             return StringUtils.newStringUtf8(Base64.decodeBase64(s));
+        }
+        public String encode(String s) {
+             return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
+        }  
+        public String prueba(){
+            String i = "//uQZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            return i;
+        }
 }

@@ -13,18 +13,15 @@ public class MP3 {
     private String filename;
     private Player player;
 
-    // constructor that takes the name of an MP3 file
-    public MP3(String filename) {
-
-        this.filename = filename;
-    }
-
+    
     public void close() {
         if (player != null) player.close();
     }
 
     // play the MP3 file to the sound card
-    public void play() {
+    public void play(String ruta) {
+        this.filename = ruta;
+        
         try {
             File file = new File(filename);
 
@@ -99,6 +96,6 @@ public class MP3 {
             }
         }.start();
 
-    }
+    }  
 
 }

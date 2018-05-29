@@ -19,20 +19,18 @@ import odysseyLogic.ConversorMP3_ByteArray;
 import org.apache.commons.codec.binary.Base64;
 import odysseyLogic.DocumentoXML;
 import odysseyLogic.MP3;
-import odysseyLogic.Node_XML;
+import odysseyLogic.XML_Parser;
 import odysseyLogic.ReproductorMp3;
-import odysseyLogic.XMLParser;
 import odysseyLogic.clientetcp;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.NodeList;
-import sun.misc.BASE64Decoder;
 
 
 public class Odyssey extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        DocumentoXML n = new DocumentoXML("Comunicacion");
+        /*DocumentoXML n = new DocumentoXML("Comunicacion");
         n.crearHijos("Codigo", "00");
         String msj = n.ConvertirXML_String();
         
@@ -47,24 +45,15 @@ public class Odyssey extends Application {
                 NUEVO.parsearString(client.getMensajeActual());
                 Base64_ nu = new Base64_();
                 //String p = NUEVO.DepurarXML(client.getMensajeActual());
-                
-                
                 Node_XML doc = new Node_XML(NUEVO.parsearString(client.getMensajeActual()));  
+                
                 NodeList lista = doc.by_tagName("mBytes");
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(lista.item(0).getTextContent());
-                
-                //String dec = nu.descifrarBase64(lista.item(0).getTextContent());
-                //byte[] v = dec.getBytes();
-                //System.out.print("Soy este we: " + dec);
-                
-                /*byte[] decoded = Base64.decodeBase64(lista.item(0).getTextContent());
-                //String ruta = "mp3";*/
-               // System.out.println(decodedBytes);
-                FileUtils.writeByteArrayToFile(new File("puta vida.mp3"), decodedBytes);
-                     
-                //MP3 repro = new MP3("/home/cris/NetBeansProjects/Odyssey/puta vida.mp3");
-                //repro.play();
+                byte[] m = Base64.decodeBase64(lista.item(0).getTextContent());
+         
+                FileUtils.writeByteArrayToFile(new File("prueba.mp3"), m);
+                MP3 repro = new MP3("/home/cris/NetBeansProjects/Odyssey/prueba.mp3");
+                repro.play();
+                       */
                 
         
         

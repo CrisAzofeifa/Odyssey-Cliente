@@ -28,6 +28,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import odysseyLogic.Cancion;
+import odysseyLogic.MP3;
 import odysseyLogic.ReproductorMp3;
 
 /**
@@ -57,8 +58,9 @@ public class MainWindowController implements Initializable {
     @FXML
     private ListView<String> listaCanciones;
 
-
-    private ReproductorMp3 repro = new ReproductorMp3();
+    private ReproductorMp3 repro = ReproductorMp3.getSingletonInstance();
+    
+    public String ruta;
 
     /**
      * Initializes the controller class.
@@ -70,8 +72,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     void prueba(ActionEvent event) {       
-        listaCanciones.getItems().add("Believer  -  Imagine Dragons   -   Deconocido");
-                
+        listaCanciones.getItems().add("Believer  -  Imagine Dragons   -   Deconocido");                
     } 
     
     @FXML
@@ -83,20 +84,16 @@ public class MainWindowController implements Initializable {
         void SincronizarDatos(ActionEvent event) {
 
     }        
-    
-    @FXML
-    void registrarse(ActionEvent event) {
-        System.out.println("si sirvo");
-    }
+   
     @FXML
         void seleccionDeCancion(ActionEvent event) {
-        
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
-        //fileChooser.showOpenDialog(window);
         fileChooser.setTitle("Open Resource File");
         System.out.println(selectedFile.getPath());
+        this.ruta = selectedFile.getPath();
+        Play(event);
         
     }
             
@@ -107,7 +104,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     void Play(ActionEvent event) {
-        repro.Play();
+        repro.Play(ruta);
     }
 
     @FXML

@@ -1,20 +1,23 @@
 package odysseyLogic;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
-public class Node_XML {
+public class XML_Parser {
 	private Document document;
-	//Constructor de la clase
-	public Node_XML (Document document) {
-		this.document = document;
-	}
-	
+		
 	// Obtiene una lista de todos los elementos que tengan como nombre (key)
 	public NodeList by_tagName (String key) {
 		return document.getElementsByTagName(key);
@@ -57,5 +60,13 @@ public class Node_XML {
 	public int get_lenght_of_key (String key) {
 		return document.getElementsByTagName(key).getLength();
 	}
+        
+        public void parsearString(String xml) throws ParserConfigurationException, UnsupportedEncodingException, SAXException, IOException, TransformerConfigurationException, TransformerException{
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(new ByteArrayInputStream(xml.getBytes("UTF-8"))); 
+
+            this.document = doc;
+    }
 	
 }

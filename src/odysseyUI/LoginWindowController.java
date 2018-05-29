@@ -23,17 +23,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javazoom.jl.decoder.JavaLayerException;
 import odysseyLogic.DocumentoXML;
-import odysseyLogic.Node_XML;
+import odysseyLogic.XML_Parser;
 import odysseyLogic.ReproductorMp3;
 import odysseyLogic.clientetcp;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -69,24 +72,40 @@ public class LoginWindowController implements Initializable {
     }
     
     @FXML
-    void validarDatos(ActionEvent event) throws IOException, TransformerException, FileNotFoundException, JavaLayerException, ParserConfigurationException {       
+    void validarDatos(ActionEvent event) throws ParserConfigurationException, TransformerException, TransformerConfigurationException, IOException, UnsupportedEncodingException, SAXException {       
         DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
-        nuevo.crearHijos("Nombre", userTextField.getText());
-        nuevo.crearHijos("Contraseña", passwordTextField.getText());
-        
-        Node_XML nue = new Node_XML(nuevo.getDoc());
-        NodeList p = nue.by_tagName("Contraseña");
-        System.out.println("Soy este elemento: " + p.item(0).getNodeName());
-        System.out.println("Soy este atributo: " + p.item(0).getTextContent());
-        
-        
-        Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        Scene creacionDocs = new Scene(gui);
+        nuevo.crearHijos("nombre", userTextField.getText());
+        nuevo.crearHijos("contraseña", passwordTextField.getText());
+        nuevo.crearHijos("codigo", "1");
+        loginUsuario(nuevo.ConvertirXML_String());
+        if(true){//loginUsuario(nuevo.ConvertirXML_String())){
+            Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+            Scene creacionDocs = new Scene(gui);
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(creacionDocs);
-        window.show();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(creacionDocs);
+            window.show();
+        }else{
+            //Colocar messagebox de error
+        }
+                               
+
         
     }
     
+   public boolean loginUsuario(String XML) throws IOException, ParserConfigurationException, UnsupportedEncodingException, SAXException, TransformerException{
+       clientetcp client = new clientetcp();
+		java.net.Socket socket = client.crear();
+                client.enviar(socket, XML);
+                
+		//client.recibir(socket);
+                System.out.println(client.getMensajeActual());
+       //XML_Parser parser = new XML_Parser();
+       //parser.parsearString(envio.getMensajeActual());
+       //NodeList nodos = parser.by_tagName("validacion");
+       
+       return false; //"true".equals(nodos.item(0).getTextContent());
+   }
+    
 }
+

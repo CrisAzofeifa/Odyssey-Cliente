@@ -30,7 +30,12 @@ public class ReproductorMp3{
     private Player player;
     private long pausedAt, endsAt;
     private String songPath;
-    private Thread repro;
+
+    
+    private ReproductorMp3(){
+        
+    }
+    
     public static ReproductorMp3 getSingletonInstance() {
         if (instancia == null){
             instancia = new ReproductorMp3();
@@ -50,8 +55,8 @@ public class ReproductorMp3{
         endsAt = pausedAt = 0;
     }
 
-    public void Play(){
-        play_music("/home/cris/NetBeansProjects/Prueba/3CCv6Zw7Zmpy.128.mp3");
+    public void Play(String ruta){
+        play_music(ruta);
         System.out.println("Playing song...");
     }
 
@@ -91,7 +96,6 @@ public class ReproductorMp3{
             } catch (IOException e) {
 
             }
-
             new Thread(){
                 @Override
                 public void run() {
@@ -102,6 +106,36 @@ public class ReproductorMp3{
                     }
                 }
             }.start();
+            
+        }else{
+            try {
+                this.player =null;
+                this.inputStream = new FileInputStream(path);
+                this.bufferedInputStream = new BufferedInputStream(inputStream);
+
+                this.player = new Player(bufferedInputStream);
+                endsAt = inputStream.available();
+                songPath = path + "";
+
+            } catch (FileNotFoundException e) {
+                System.out.println("Cannot reproduce file");
+            } catch (JavaLayerException e) {
+                System.out.println("Cannot start player");
+            } catch (IOException e) {
+
+            }
+            
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        player.play();
+                    } catch (JavaLayerException e) {
+                        System.out.println("Cannot play :(");
+                    }
+                }
+            }.start();
+            
         }
     }
 
@@ -130,7 +164,6 @@ public class ReproductorMp3{
         } catch (IOException e) {
 
         }
-
         new Thread(){
             @Override
             public void run() {
@@ -146,6 +179,7 @@ public class ReproductorMp3{
     private void setSliderPosition(){
         
     }
+    
 }
     
   
