@@ -72,12 +72,12 @@ public class LoginWindowController implements Initializable {
     
     @FXML
     void validarDatos(ActionEvent event) throws ParserConfigurationException, TransformerException, TransformerConfigurationException, IOException, UnsupportedEncodingException, SAXException {       
-        DocumentoXML nuevo = new DocumentoXML("ValidarDatos");
-        nuevo.crearHijos("nombre", userTextField.getText());
+        DocumentoXML nuevo = new DocumentoXML("comunicacion");
+        nuevo.crearHijos("usuario", userTextField.getText());
         nuevo.crearHijos("contrasena", passwordTextField.getText());
-        nuevo.crearHijos("codigo", "1");
+        nuevo.crearHijos("codigo", "2");
         loginUsuario(nuevo.ConvertirXML_String());
-        if(true){//loginUsuario(nuevo.ConvertirXML_String())){
+        if(loginUsuario(nuevo.ConvertirXML_String())){
             Parent gui = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
             Scene creacionDocs = new Scene(gui);
 
@@ -93,17 +93,16 @@ public class LoginWindowController implements Initializable {
     }
     
    public boolean loginUsuario(String XML) throws IOException, ParserConfigurationException, UnsupportedEncodingException, SAXException, TransformerException{
-       clientetcp client = new clientetcp();
-		java.net.Socket socket = client.crear();
-                client.enviar(socket, XML);
-                
-		//client.recibir(socket);
-                System.out.println(client.getMensajeActual());
-       //XML_Parser parser = new XML_Parser();
-       //parser.parsearString(envio.getMensajeActual());
-       //NodeList nodos = parser.by_tagName("validacion");
+        clientetcp client = new clientetcp();
+        java.net.Socket socket = client.crear();
+        client.enviar(socket, XML);
+        client.recibir(socket);
+        System.out.println(client.getMensajeActual());
+        XML_Parser parser = new XML_Parser();
+        parser.parsearString(client.getMensajeActual());
+        NodeList nodos = parser.by_tagName("usuario");
        
-       return false; //"true".equals(nodos.item(0).getTextContent());
+       return "true".equals(nodos.item(0).getTextContent());
    }
     
 }

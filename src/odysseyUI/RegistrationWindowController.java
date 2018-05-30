@@ -98,10 +98,10 @@ public class RegistrationWindowController implements Initializable {
                     registro.crearHijos("contrasena", PasswordTextField.getText());
                     registro = verificarGéneros(registro);
                     System.out.println(registro.ConvertirXML_String());
-                    /*clientetcp client = new clientetcp();
+                    clientetcp client = new clientetcp();
                     java.net.Socket socket = client.crear();
-                    client.enviar(socket, registro.ConvertirXML_String());*/
-                        
+                    client.enviar(socket, registro.ConvertirXML_String());
+                    System.out.println(client.getMensajeActual());                        
                 }else{
                     //Colocar ventana emergente
                     System.out.println(1);
@@ -119,36 +119,26 @@ public class RegistrationWindowController implements Initializable {
  
     
     public DocumentoXML verificarGéneros(DocumentoXML xml){
+        String generos = ""; 
         if(Rock.isSelected()){
-            xml.crearHijos("rock", "1");
-        }else{
-            xml.crearHijos("rock", "0");            
+            generos = generos + "+rock+";
         }
         if(Electro.isSelected()){
-            xml.crearHijos("electronica", "1");            
-        }else{
-            xml.crearHijos("electronica", "0");            
+            generos = generos + "+electronica+";                    
         }
         if(HipHop.isSelected()){
-            xml.crearHijos("hiphop", "1");            
-        }else{
-            xml.crearHijos("hiphop", "0");            
-        }
+            generos = generos + "+hiphop+";          
+        }         
         if(Metal.isSelected()){
-            xml.crearHijos("metal", "1");            
-        }else{
-            xml.crearHijos("metal", "0");            
+            generos = generos + "+metal+";           
         }
         if(Reggaeton.isSelected()){
-           xml.crearHijos("reggaeton", "1");            
-        }else{
-            xml.crearHijos("reggaeton", "0");            
-        }
+           generos = generos + "+reggaeton+";           
+        }        
         if(Rap.isSelected()){
-            xml.crearHijos("rap", "1");            
-        }else{
-            xml.crearHijos("rap", "0");
+            generos = generos + "+rap+";            
         }
+        xml.crearHijos("generos", generos);
         return xml;
     }
     
