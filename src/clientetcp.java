@@ -9,8 +9,9 @@ public class clientetcp {
 	}
 	
 	java.net.Socket crear() throws UnknownHostException, IOException {
-	   String ip = "10.42.0.42";
-	   int port = 8888;
+            System.out.println("YES1");
+	   String ip = "192.168.0.6";
+	   int port = 8889;
 	   java.net.Socket socket = null;
 	
 		socket = new java.net.Socket(ip,port);

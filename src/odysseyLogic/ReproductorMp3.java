@@ -16,22 +16,37 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
-
+import org.apache.commons.codec.binary.Base64;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Observable;
+import javafx.beans.InvalidationListener;
+import javafx.scene.control.Label;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import odysseyUI.MainWindowController;
+import org.apache.commons.io.FileUtils;
+import org.xml.sax.SAXException;
 
 public class ReproductorMp3{
     
     private static ReproductorMp3 instancia;
     private FileInputStream inputStream;
     private BufferedInputStream bufferedInputStream;
-    private Player player;
+    private Media media;
+    private MediaPlayer mp;
     private long pausedAt, endsAt;
     private String songPath;
-    private Thread current_song;
-   
+    private Thread streamc;
+    private  Slider slide;
+    private double current_time = 0.0;
     private ReproductorMp3(){
         
     }
@@ -56,8 +71,9 @@ public class ReproductorMp3{
     }
 
     public void Play(String ruta){
-        play_music(ruta);
         System.out.println("Playing song...");
+        play_music(ruta);
+        
     }
 
     public  void Pause(){
@@ -66,9 +82,7 @@ public class ReproductorMp3{
     }
 
     public void Resume(){
-        if (player != null){
         resume_music();
-        }
     }
 
     public void slider_drag(){
@@ -76,118 +90,87 @@ public class ReproductorMp3{
     }
 
     private void stop_music(){
-        if(player != null){
-            player.close();
-        }
+       mp.stop();
+       streamc.stop();
     }
-
-    private void play_music(String path){
+public void streaming (Media m, Slider slider) throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException{
+        this.media = m;
+        this.slide = slider;
         
-        if(player == null){
-            try {
-                inputStream = new FileInputStream(path);
-                bufferedInputStream = new BufferedInputStream(inputStream);
-
-                player = new Player(bufferedInputStream);
-                endsAt = inputStream.available();
-                songPath = path + "";
-
-            } catch (FileNotFoundException e) {
-                System.out.println("Cannot reproduce file");
-            } catch (JavaLayerException e) {
-                System.out.println("Cannot start player");
-            } catch (IOException e) {
-
-            }
-            current_song = new Thread(){
-                @Override
-                public void run() {
+        DocumentoXML stream = new DocumentoXML("comunicacion");
+        stream.crearHijos("codigo", "0");
+        stream.crearHijos("chunk", "1");
+        clientetcp client = new clientetcp();
+        java.net.Socket socket = client.crear();
+        System.out.println(stream);
+        client.enviar(socket, stream.ConvertirXML_String());
+        
+        XML_Parser parser = new XML_Parser();
+        parser.parsearString(client.getMensajeActual());
+        
+        String limite = parser.by_tagName("limite").item(0).getTextContent();
+        int x = Integer.parseInt(limite);
+        System.out.println("LIMIT");
+        System.out.println(x);
+        streamc = new Thread(){
+            @Override
+            public void run() {
+                int y = 0; 
+                while(y < x){
+                    DocumentoXML nuevo;
                     try {
-                        player.play();
-                    } catch (JavaLayerException e) {
-                        System.out.println("Cannot play :(");
+                        nuevo = new DocumentoXML("comunicacion");
+                        nuevo.crearHijos("codigo", "0");
+                        nuevo.crearHijos("chunk", ""+y);
+                        clientetcp cliente = new clientetcp();
+                        java.net.Socket socketcito = client.crear();    
+                        cliente.enviar(socketcito, nuevo.ConvertirXML_String());  
+
+                        XML_Parser parse = new XML_Parser(); 
+                        parse.parsearString(cliente.getMensajeActual());
+                        byte[] j = Base64.decodeBase64(parse.by_tagName("mBytes").item(0).getTextContent());
+
+                        FileUtils.writeByteArrayToFile(new File("pruebadeamor666.mp3"), j);
+                        Play("/home/bamdres16/NetBeansProjects/Odyssey-Cliente/pruebadeamor666.mp3");
+                        while(mp.getCurrentTime().compareTo(mp.getTotalDuration()) == -1);
+                        current_time+=mp.getTotalDuration().toSeconds();
+                        mp.pause();
+                        y++;                        
+                    } catch (ParserConfigurationException ex) {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerException ex) {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SAXException ex) {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-            };
-            current_song.setDaemon(true);
-            current_song.start();
-            
-        }else{
   
-            try {
-                
-                this.player =null;
-                this.inputStream = new FileInputStream(path);
-                this.bufferedInputStream = new BufferedInputStream(inputStream);
-
-                this.player = new Player(bufferedInputStream);
-                endsAt = inputStream.available();
-                songPath = path + "";
-
-            } catch (FileNotFoundException e) {
-                System.out.println("Cannot reproduce file");
-            } catch (JavaLayerException e) {
-                System.out.println("Cannot start player");
-            } catch (IOException e) {
-
+                }                
             }
-            current_song.stop();
-            current_song = new Thread(){
-                @Override
-                public void run() {
-                    try {
-                        player.play();
-                    } catch (JavaLayerException e) {
-                        System.out.println("Cannot play :(");
-                    }
-                }
-            };
-            current_song.setDaemon(true);
-            current_song.start();
-            
-        }
+        };
+        streamc.setDaemon(true);
+        streamc.start();
+    }
+    private void play_music(String path){
+       
+            media = new Media ("file:///"+path);
+            mp = new MediaPlayer(media);
+            mp.play();
+        
+        
+        
     }
 
     private void pause_music(){
-        if(player != null){
-            try {
-                pausedAt = inputStream.available();
-            } catch (IOException e) {
-
-            }
-            player.close();
-        }
+      mp.pause();
+      
+      
     }
 
     private void resume_music(){
-        try {
-            inputStream = new FileInputStream(songPath);
-            bufferedInputStream = new BufferedInputStream(inputStream);
-
-            player = new Player(bufferedInputStream);
-            inputStream.skip(endsAt - pausedAt);
-        } catch (FileNotFoundException e) {
-            System.out.println("Cannot reproduce file");
-        } catch (JavaLayerException e) {
-            System.out.println("Cannot start player");
-        } catch (IOException e) {
-
-        }
-        current_song.stop();
-        
-        current_song = new Thread(){
-            @Override
-            public void run() {
-                try {
-                    player.play();
-                } catch (JavaLayerException e) {
-                    System.out.println("Cannot play :(");
-                }
-            }
-        };
-        current_song.setDaemon(true);
-        current_song.start();
-        
+       mp.play();
+       
     }
 
     private void setSliderPosition(){
@@ -203,9 +186,7 @@ public class ReproductorMp3{
         return bufferedInputStream;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
+   
 
     public long getPausedAt() {
         return pausedAt;
@@ -219,10 +200,6 @@ public class ReproductorMp3{
         return songPath;
     }
 
-    public Thread getCurrent_song() {
-        return current_song;
-    }
+   
     
 }
-    
-  

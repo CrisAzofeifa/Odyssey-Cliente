@@ -12,16 +12,16 @@ public class clientetcp {
 	}
 	
 	public java.net.Socket crear() throws UnknownHostException, IOException {
-	   String ip = "localhost";
+            
+	   String ip = "192.168.0.6";
 	   int port = 8888;
 	   java.net.Socket socket = null;
-	
-		socket = new java.net.Socket(ip,port);
+           socket = new java.net.Socket(ip,port);
 
 	return socket;
 	   
 
-}
+        }
 	
 	
 	 public void cerrar(java.net.Socket socket) throws IOException {
@@ -82,9 +82,11 @@ public class clientetcp {
      public void recibir2(java.net.Socket socket) throws IOException   {
         	InputStreamReader in = new InputStreamReader(socket.getInputStream());
         	BufferedReader br = new BufferedReader(in);
-    		   char[] buffer = new char[99999999];
-                   int count = br.read(buffer, 0, 99999999);
-    		   String reply = new String(buffer, 0, count);
+    		   
+    		   String reply ="";
+                   for (int i = 0 ; i < 9 ; i++){
+                       reply+=br.readLine();
+                   }
     		   socket.shutdownOutput();
                    //System.out.println(reply);
                    this.mensajeActual = reply;

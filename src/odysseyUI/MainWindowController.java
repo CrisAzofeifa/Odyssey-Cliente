@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
@@ -32,6 +33,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.media.Media;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -73,7 +75,10 @@ public class MainWindowController implements Initializable {
     @FXML
     private Slider sliderCancion;
        
-  
+    @FXML Button stop;
+    @FXML Button start;
+    @FXML Button resume;
+    @FXML Button pause;
     @FXML
     private TableView <Song_item> songs;
     @FXML
@@ -88,7 +93,9 @@ public class MainWindowController implements Initializable {
     private TableColumn <Song_item, Double> duration;
     @FXML
     private TableColumn <Song_item, String> genre;
-    
+    @FXML private Media md;
+    @FXML Label init;
+    @FXML Label end;
     
             
     private ReproductorMp3 repro = ReproductorMp3.getSingletonInstance();
@@ -108,7 +115,9 @@ public class MainWindowController implements Initializable {
         year.setCellValueFactory(new PropertyValueFactory<Song_item, Integer> ("year"));
         duration.setCellValueFactory(new PropertyValueFactory<Song_item, Double> ("duration"));
         songs.setItems(getSongs());
-        
+        resume.setDisable(true);
+        stop.setDisable(true);
+        pause.setDisable(true);
     }
 
     
@@ -133,68 +142,23 @@ public class MainWindowController implements Initializable {
             
     }
         
-    void streaming() throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException{   
-        DocumentoXML stream = new DocumentoXML("comunicacion");
-        stream.crearHijos("codigo", "0");
-        stream.crearHijos("chunk", "1");
-        clientetcp client = new clientetcp();
-        java.net.Socket socket = client.crear();
-        System.out.println(stream);
-        client.enviar(socket, stream.ConvertirXML_String());
+    void streaming() throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException{ 
         
-        XML_Parser parser = new XML_Parser();
-        parser.parsearString(client.getMensajeActual());
-        
-        String limite = parser.by_tagName("limite").item(0).getTextContent();
-        int x = Integer.parseInt(limite);
-        new Thread(){
-            @Override
-            public void run() {
-                int y = 0; 
-                while(y < x){
-                    DocumentoXML nuevo;
-                    try {
-                        nuevo = new DocumentoXML("comunicacion");
-                        nuevo.crearHijos("codigo", "0");
-                        nuevo.crearHijos("chunk", ""+y);
-                        clientetcp cliente = new clientetcp();
-                        java.net.Socket socketcito = client.crear();    
-                        cliente.enviar(socketcito, nuevo.ConvertirXML_String());  
-
-                        XML_Parser parse = new XML_Parser(); 
-                        parse.parsearString(cliente.getMensajeActual());
-                        byte[] j = Base64.decodeBase64(parse.by_tagName("mBytes").item(0).getTextContent());
-
-                        FileUtils.writeByteArrayToFile(new File("pruebadeamor666.mp3"), j);
-                        repro.Play("/home/cris/NetBeansProjects/Odissey_client-Java--master/pruebadeamor666.mp3");
-                        while(repro.getCurrent_song().isAlive());
-                        y++;                        
-                    } catch (ParserConfigurationException ex) {
-                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (TransformerException ex) {
-                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SAXException ex) {
-                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-  
-                }                
-            }
-        }.start();
-
-        
-
-        
+        repro.streaming(md,sliderCancion);
     }
 
     @FXML
     void Pause(ActionEvent event) {
+        resume.setDisable(false);
         repro.Pause();
     }
 
     @FXML
     void Play(ActionEvent event) throws ParserConfigurationException, IOException, TransformerException, UnsupportedEncodingException, SAXException  {
+        resume.setDisable(true);
+        stop.setDisable(false);
+        pause.setDisable(false);
+        
         streaming();
         //repro.Play(ruta);
     }

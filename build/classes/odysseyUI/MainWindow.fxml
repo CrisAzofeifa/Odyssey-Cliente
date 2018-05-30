@@ -15,11 +15,11 @@
       <Button layoutX="111.0" layoutY="184.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Album" />
       <Button layoutX="111.0" layoutY="224.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Aritista" />
       <Button layoutX="111.0" layoutY="264.0" mnemonicParsing="false" text="Canción" />
-      <Button layoutX="657.0" layoutY="583.0" mnemonicParsing="false" onAction="#Play" text="Play" />
+      <Button fx:id="start" layoutX="657.0" layoutY="583.0" mnemonicParsing="false" onAction="#Play" text="Play" />
       <Slider fx:id="sliderCancion" layoutX="564.0" layoutY="552.0" prefHeight="16.0" prefWidth="350.0" />
-      <Button layoutX="720.0" layoutY="583.0" mnemonicParsing="false" onAction="#Pause" text="Pause" />
-      <Button layoutX="796.0" layoutY="583.0" mnemonicParsing="false" onAction="#Resume" text="Resume" />
-      <Button layoutX="587.0" layoutY="583.0" mnemonicParsing="false" onAction="#Stop" text="Stop" />
+      <Button fx:id="pause" layoutX="720.0" layoutY="583.0" mnemonicParsing="false" onAction="#Pause" text="Pause" />
+      <Button fx:id="resume" layoutX="796.0" layoutY="583.0" mnemonicParsing="false" onAction="#Resume" text="Resume" />
+      <Button fx:id="stop" layoutX="587.0" layoutY="583.0" mnemonicParsing="false" onAction="#Stop" text="Stop" />
       <TableView fx:id="songs" layoutX="326.0" layoutY="104.0" prefHeight="372.0" prefWidth="826.0">
         <columns>
           <TableColumn fx:id="album" prefWidth="137.0" text="Album" />
